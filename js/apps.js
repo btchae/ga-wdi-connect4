@@ -1,14 +1,27 @@
 
 /////Making the game////
-var gameField = new Array();
+var gameBoard = new Array();
 var makeBoard =function(){
-  gameField = new Array();
+  gameBoard = new Array();
   for(var i=0; i<6; i++){
-    gameField[i] = new Array();
+    gameBoard[i] = new Array();
     for(var j=0; j<7; j++){
-      gameField[i].push(0);
+      gameBoard[i].push(0);
     }
   }
 }
 makeBoard();
-console.log(gameField);
+console.log(gameBoard);
+
+////Pseudo code
+////Make the game board
+////
+////
+////
+///
+///
+////
+////
+/////
+/////
+///
