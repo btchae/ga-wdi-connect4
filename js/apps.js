@@ -3,6 +3,7 @@
 var emptySpace = 0;
 var playerSpace = 1;
 var otherPlayerSpace = 2;
+
 var gameBoard = new Array();
 var makeBoard =function(){
   gameBoard = new Array();
@@ -13,18 +14,29 @@ var makeBoard =function(){
     }
   }
 }
+
 makeBoard();
 console.log(gameBoard);
-
+console.log(gameBoard[0]);
+console.log(gameBoard[0][0]);
 var playerMove = function() {
-	gameBoard.this[0] = 1;
+	.addEventListener("click", )
 };
 
-var checkWin = function(argument) {
+var checkWin = function() {
 	if (tile >= 7) {
 
 	}
 };
+
+var boardValue = function(row, col) {
+	 if(gameBoard[row] == undefined || gameBoard[row][col] == undefined){
+    return -1;
+  } else {
+    return gameBoard[row][col];
+  }
+}
+}
 
 var resetGame = function() {
 
