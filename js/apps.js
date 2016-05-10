@@ -1,5 +1,8 @@
 
 /////Making the game////
+var emptySpace = 0;
+var playerSpace = 1;
+var otherPlayerSpace = 2;
 var gameBoard = new Array();
 var makeBoard =function(){
   gameBoard = new Array();
@@ -14,11 +17,13 @@ makeBoard();
 console.log(gameBoard);
 
 var playerMove = function() {
-
+	gameBoard.this[0] = 1;
 };
 
 var checkWin = function(argument) {
-	// body...
+	if (tile >= 7) {
+
+	}
 };
 
 var resetGame = function() {
