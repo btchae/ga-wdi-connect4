@@ -1,5 +1,5 @@
 
-/////My Columns of connect-foar////
+/////Making the game////
 var gameField = new Array();
 var makeBoard =function(){
   gameField = new Array();
