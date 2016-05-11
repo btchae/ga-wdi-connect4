@@ -1,5 +1,6 @@
 
 /////Making the game////
+var connectFourBoard = document.getElementById('gameboard');
 var emptySpace = 0;
 var playerSpace = 1;
 var otherPlayerSpace = 2;
@@ -19,6 +20,10 @@ var makeBoard = function(){
       space.className = 'space';
       space.innerHTML = '0';
       space.id = i + "," + j;
+      space.setAttribute('data-value', j);
+      // space.addEventListener('click',
+      // 	function() {
+      // 	console.log(hello)})
     }
   }
 }
@@ -29,6 +34,35 @@ makeBoard();
 console.log(gameBoard);
 console.log(gameBoard[0]);
 console.log(gameBoard[0][1]);
+
+var boardSpace = document.getElementsByClassName('space');
+console.log(boardSpace);
+// var clickCount = 0;
+// var trackClick = boardSpace[i].addEventListener("click",
+// 		function() {
+// 			clickCount++;
+// 			clickCount = clickCount++;
+// 			console.log(clickCount);
+
+// 		});
+var makeSpaceClickable = function() {
+	for (i = 0; i < boardSpace.length; i++) {
+		boardSpace[i].addEventListener("click",
+			function() {
+				console.log("clicking works!");
+				console.log(this.getAttribute('data-value'));
+				checkRowSpace(this.getAttribute('data-value'));
+			})
+	}
+};
+makeSpaceClickable();
+// connectFourBoard.addEventListener("click",
+// 	function() {
+// 		console.log("clicking works!");
+// 		console.log(this);
+// 		checkRowSpace(0);
+// 	})
+
 // var playerMove = function() {
 // 	.addEventListener("click", )
 // };
@@ -61,6 +95,8 @@ var boardValue = function(row, col) {
 //     	}
 // }
 // };
+
+//////add Values////
 var checkRowSpace = function(col) {
 	// for(var i = rows.length - 1; i >= 0; i--) lol this didn't work for the top row. Solution found below.
  	  for(var i = rows.length - 1; i > 0; i--){
@@ -73,15 +109,21 @@ var checkRowSpace = function(col) {
   			document.getElementById((i - 1) + "," + col).innerHTML = 1;
      		gameBoard[i-1][col] += 1;
      		break;
-   	}
- }
+   		} else if (gameBoard[0][col] === 1) {
+   			alert("Can't let you do that!");
+   			break;
+   		}
+ 	}
 };
 ///Just realized the above checkRowSpace function isn't working because right now my gameBoard[i][j] is not an integer
 var resetGame = function() {
 
 };
 
-checkRowSpace(0);
+var playerMove = function(col) {
+	checkRowSpace(col);
+}
+// checkRowSpace(0);
 // checkRowSpace(0);
 // checkRowSpace(0);
 // checkRowSpace(0);
