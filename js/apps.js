@@ -3,6 +3,7 @@
 var emptySpace = 0;
 var playerSpace = 1;
 var otherPlayerSpace = 2;
+var rows = document.getElementsByClassName('row');
 ////for now makeBoard has j,i but will eventually be 0
 var gameBoard = [];
 var makeBoard = function(){
@@ -46,19 +47,34 @@ var boardValue = function(row, col) {
   }
 };
 
+// var checkRowSpace = function(col) {
+// 	  for(var i = 0; i < 6; i++){
+// 	  	// console.log(gameBoard[i][col]);
+// 	  	// console.log(boardValue(i, col));
+//     	if (gameBoard[i][col] === 0 && gameBoard[i+1][col] === 0) {
+//     		break;
+//     	} else {
+//     		// gameBoard[i][col] = 1; I was really confused about why I wasn't getting a coordinate pair
+//     		//but then I figured it out as indicated below.
+//     		gameBoard[i][col] += 1;
+//     		console.log(gameBoard);
+//     	}
+// }
+// };
 var checkRowSpace = function(col) {
-	  for(var i = 0; i < 6; i++){
-	  	// console.log(gameBoard[i][col]);
-	  	// console.log(boardValue(i, col));
-    	if (gameBoard[i][col] === 0 && gameBoard[i+1][col] === 0) {
-    		break;
-    	} else {
-    		// gameBoard[i][col] = 1; I was really confused about why I wasn't getting a coordinate pair
-    		//but then I figured it out as indicated below.
-    		gameBoard[i][col] += 1;
-    		console.log(gameBoard);
-    	}
-}
+	// for(var i = rows.length - 1; i >= 0; i--) lol this didn't work for the top row. Solution found below.
+ 	  for(var i = rows.length - 1; i > 0; i--){
+     	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
+     		// console.log(document.getElementById(i + "," + col));
+     		document.getElementById(i + "," + col).innerHTML = 1;
+     		gameBoard[i][col] += 1;
+     		break;
+     	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
+  			document.getElementById((i - 1) + "," + col).innerHTML = 1;
+     		gameBoard[i-1][col] += 1;
+     		break;
+   	}
+ }
 };
 ///Just realized the above checkRowSpace function isn't working because right now my gameBoard[i][j] is not an integer
 var resetGame = function() {
@@ -66,8 +82,12 @@ var resetGame = function() {
 };
 
 checkRowSpace(0);
-checkRowSpace(0);
-
+// checkRowSpace(0);
+// checkRowSpace(0);
+// checkRowSpace(0);
+// checkRowSpace(0);
+// checkRowSpace(0);
+// checkRowSpace(0);
 ///these console logs were to help me understand/comprehend that whole row vs. column confusion I had
 // console.log(boardValue(2, 3));
 // console.log(boardValue(3, 2));
