@@ -9,8 +9,15 @@ var makeBoard = function(){
   gameBoard = [];
   for(var i = 0; i < 6; i++){
     gameBoard[i] = new Array();
+    var row = document.getElementById('gameboard').appendChild(document.createElement('div'));
+		row.className = 'row';
+		row.id = 'row' + i;
     for(var j = 0; j < 7; j++){
       gameBoard[i].push(0);
+      var space = document.getElementsByClassName('row')[i].appendChild(document.createElement('div'));
+      space.className = 'space';
+      space.innerHTML = '0';
+      space.id = i + "," + j;
     }
   }
 }
