@@ -37,14 +37,14 @@ console.log(gameBoard[0][1]);
 
 var boardSpace = document.getElementsByClassName('space');
 console.log(boardSpace);
-// var clickCount = 0;
-// var trackClick = boardSpace[i].addEventListener("click",
-// 		function() {
-// 			clickCount++;
-// 			clickCount = clickCount++;
-// 			console.log(clickCount);
+var clickCount = 0;
+var trackClick = connectFourBoard.addEventListener("click",
+		function() {
+			clickCount++;
+			clickCount = clickCount++;
+			console.log(clickCount);
 
-// 		});
+		});
 var makeSpaceClickable = function() {
 	for (i = 0; i < boardSpace.length; i++) {
 		boardSpace[i].addEventListener("click",
@@ -102,15 +102,28 @@ var checkRowSpace = function(col) {
  	  for(var i = rows.length - 1; i > 0; i--){
      	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
      		// console.log(document.getElementById(i + "," + col));
-     		document.getElementById(i + "," + col).innerHTML = 1;
-     		gameBoard[i][col] += 1;
-     		break;
+     		if ((clickCount%2) === 0) {
+     			document.getElementById(i + "," + col).innerHTML = 1;
+     			gameBoard[i][col] += 1;
+     			break;
+ 			} else {
+ 				document.getElementById(i + "," + col).innerHTML = 2;
+     			gameBoard[i][col] += 2;
+     			break;
+ 			}
      	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
-  			document.getElementById((i - 1) + "," + col).innerHTML = 1;
-     		gameBoard[i-1][col] += 1;
-     		break;
-   		} else if (gameBoard[0][col] === 1) {
+     		if ((clickCount%2) === 0) {
+     			document.getElementById((i - 1) + "," + col).innerHTML = 1;
+     			gameBoard[i - 1][col] += 1;
+     			break;
+ 			} else {
+ 				document.getElementById((i - 1) + "," + col).innerHTML = 2;
+     			gameBoard[i - 1][col] += 2;
+     			break;
+ 			}
+   		} else if (gameBoard[0][col] > 0) {
    			alert("Can't let you do that!");
+   			clickCount = clickCount - 1;
    			break;
    		}
  	}
