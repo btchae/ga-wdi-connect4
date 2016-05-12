@@ -4,9 +4,12 @@ var connectFourBoard = document.getElementById('gameboard');
 // var emptySpace = 0;
 // var playerSpace = 1;
 // var otherPlayerSpace = 2;
-var allReds = document.getElementsByClassName('red');
-var allBlacks = document.getElementsByClassName('black');
-allClicked = [];
+////the allReds and allBlacks arrays didn't work because they automatically arranged themselves in numerical order
+// var allReds = document.getElementsByClassName('red');
+// var allBlacks = document.getElementsByClassName('black');
+var allReds = [];
+var allBlacks = [];
+var allClicked = [];
 var rows = document.getElementsByClassName('row');
 ////for now makeBoard has j,i but will eventually be 0
 var gameBoard = [];
@@ -25,6 +28,7 @@ var makeBoard = function(){
       space.innerHTML = '';
       space.id = i + "," + j;
       space.setAttribute('data-value', j);
+      space.setAttribute('row-value', i);
       // space.addEventListener('click',
       // 	function() {
       // 	console.log(hello)})
@@ -42,6 +46,9 @@ console.log(gameBoard[0][1]);
 var boardSpace = document.getElementsByClassName('space');
 console.log(boardSpace);
 //////clickCount is critical for keeping track of turns.
+var getAdj = function(row,col) {
+console.log(row,col);
+};
 var clickCount = 0;
 var trackClick = connectFourBoard.addEventListener("click",
 		function() {
@@ -53,8 +60,9 @@ var trackClick = connectFourBoard.addEventListener("click",
 
 var checkForWin = function(space) {
 	console.log(allClicked);
+	// console.log(allClicked[allClicked.length - 1].id + 1);
 	console.log('this works!');
-
+	getAdj(allClicked[allClicked.length - 1].getAttribute('row-value'),allClicked[allClicked.length - 1].getAttribute('data-value'));
 };
 
 var makeSpaceClickable = function() {
