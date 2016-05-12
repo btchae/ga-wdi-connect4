@@ -47,7 +47,12 @@ var boardSpace = document.getElementsByClassName('space');
 console.log(boardSpace);
 //////clickCount is critical for keeping track of turns.
 var getAdj = function(row,col) {
-console.log(row,col);
+console.log(document.getElementById(row + ',' + col));
+console.log(row + 1);
+
+// if (document.getElementById(row + ',' + col).classList[1] === 'red' && document.getElementById((row + 1) + ',' + col).classList[1] === 'red' && document.getElementById((row + 2)+ ',' + col).classList[1] === 'red' && document.getElementById((row + 3)+ ',' + col).classList[1] === 'red') {
+	// 	console.log('this is my life now');
+	// }
 };
 var clickCount = 0;
 var trackClick = connectFourBoard.addEventListener("click",
@@ -59,14 +64,23 @@ var trackClick = connectFourBoard.addEventListener("click",
 		});
 
 var checkForWin = function(space) {
-	console.log(allClicked);
+	console.log(allReds);
+	console.log(allBlacks);
+	console.log(clickCount);
+	if (clickCount%2 === 0) {
+		getAdj(allReds[allReds.length - 1].getAttribute('row-value'),allReds[allReds.length - 1].getAttribute('data-value'));
+	} else {
+		getAdj(allBlacks[allBlacks.length - 1].getAttribute('row-value'),allBlacks[allBlacks.length - 1].getAttribute('data-value'))
+	}
 	// console.log(allClicked[allClicked.length - 1].id + 1);
-	console.log('this works!');
-	getAdj(allClicked[allClicked.length - 1].getAttribute('row-value'),allClicked[allClicked.length - 1].getAttribute('data-value'));
+	// console.log('this works!');
+	// if (allClicked[allClicked.length - 1] === allReds[allReds.length - 1]) {
+	// getAdj(allClicked[allClicked.length - 1].getAttribute('row-value'),allClicked[allClicked.length - 1].getAttribute('data-value'));
+	// } else if (allClicked[allClicked.length - 1] === allBlacks[allBlacks.length - 1])
 };
 
 var makeSpaceClickable = function() {
-	for (i = 0; i < boardSpace.length; i++) {
+	for (var i = 0; i < boardSpace.length; i++) {
 		boardSpace[i].addEventListener("click",
 			function() {
 				console.log("clicking works!");
@@ -127,20 +141,32 @@ var checkRowSpace = function(col) {
      		if ((clickCount%2) === 0) {
      			document.getElementById(i + "," + col).classList.add('red');
      			gameBoard[i][col] += 1;
+     			allReds.push(document.getElementById(i + "," + col));
+     			console.log(clickCount);
+     			// console.log(allReds);
      			break;
  			} else {
  				document.getElementById(i + "," + col).classList.add('black');
      			gameBoard[i][col] += 2;
+     			allBlacks.push(document.getElementById(i + "," + col));
+     			console.log(clickCount);
+     			// console.log(allBlacks);
      			break;
  			}
      	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
      		if ((clickCount%2) === 0) {
      			document.getElementById((i - 1) + "," + col).classList.add('red');
      			gameBoard[i - 1][col] += 1;
+     			allReds.push(document.getElementById((i - 1) + "," + col));
+     			console.log(clickCount);
+     			// console.log(allReds); I did this to check if the elements were being pushed into the arrays properly
      			break;
  			} else {
  				document.getElementById((i - 1) + "," + col).classList.add('black');
      			gameBoard[i - 1][col] += 2;
+     			allBlacks.push(document.getElementById((i - 1) + "," + col));
+     			console.log(clickCount);
+     			// console.log(allBlacks);
      			break;
  			}
    		} else if (gameBoard[0][col] > 0) {
