@@ -1,9 +1,12 @@
 
 /////Making the game////
 var connectFourBoard = document.getElementById('gameboard');
-var emptySpace = 0;
-var playerSpace = 1;
-var otherPlayerSpace = 2;
+// var emptySpace = 0;
+// var playerSpace = 1;
+// var otherPlayerSpace = 2;
+var allReds = document.getElementsByClassName('red');
+var allBlacks = document.getElementsByClassName('black');
+allClicked = [];
 var rows = document.getElementsByClassName('row');
 ////for now makeBoard has j,i but will eventually be 0
 var gameBoard = [];
@@ -18,7 +21,8 @@ var makeBoard = function(){
       gameBoard[i].push(0);
       var space = document.getElementsByClassName('row')[i].appendChild(document.createElement('div'));
       space.className = 'space';
-      space.innerHTML = '0';
+      // space.innerHTML = '0';<--Originally used 0, 1 and 2 as a basic visual representation
+      space.innerHTML = '';
       space.id = i + "," + j;
       space.setAttribute('data-value', j);
       // space.addEventListener('click',
@@ -34,9 +38,10 @@ makeBoard();
 console.log(gameBoard);
 console.log(gameBoard[0]);
 console.log(gameBoard[0][1]);
-
+////having every game tile be a variable helps
 var boardSpace = document.getElementsByClassName('space');
 console.log(boardSpace);
+//////clickCount is critical for keeping track of turns.
 var clickCount = 0;
 var trackClick = connectFourBoard.addEventListener("click",
 		function() {
@@ -45,6 +50,13 @@ var trackClick = connectFourBoard.addEventListener("click",
 			console.log(clickCount);
 
 		});
+
+var checkForWin = function(space) {
+	console.log(allClicked);
+	console.log('this works!');
+
+};
+
 var makeSpaceClickable = function() {
 	for (i = 0; i < boardSpace.length; i++) {
 		boardSpace[i].addEventListener("click",
@@ -52,6 +64,8 @@ var makeSpaceClickable = function() {
 				console.log("clicking works!");
 				console.log(this.getAttribute('data-value'));
 				checkRowSpace(this.getAttribute('data-value'));
+				allClicked.push(this);
+				checkForWin(this);
 			})
 	}
 };
@@ -103,21 +117,21 @@ var checkRowSpace = function(col) {
      	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
      		// console.log(document.getElementById(i + "," + col));
      		if ((clickCount%2) === 0) {
-     			document.getElementById(i + "," + col).innerHTML = 1;
+     			document.getElementById(i + "," + col).classList.add('red');
      			gameBoard[i][col] += 1;
      			break;
  			} else {
- 				document.getElementById(i + "," + col).innerHTML = 2;
+ 				document.getElementById(i + "," + col).classList.add('black');
      			gameBoard[i][col] += 2;
      			break;
  			}
      	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
      		if ((clickCount%2) === 0) {
-     			document.getElementById((i - 1) + "," + col).innerHTML = 1;
+     			document.getElementById((i - 1) + "," + col).classList.add('red');
      			gameBoard[i - 1][col] += 1;
      			break;
  			} else {
- 				document.getElementById((i - 1) + "," + col).innerHTML = 2;
+ 				document.getElementById((i - 1) + "," + col).classList.add('black');
      			gameBoard[i - 1][col] += 2;
      			break;
  			}
@@ -135,7 +149,8 @@ var resetGame = function() {
 
 var playerMove = function(col) {
 	checkRowSpace(col);
-}
+};
+
 // checkRowSpace(0);
 // checkRowSpace(0);
 // checkRowSpace(0);

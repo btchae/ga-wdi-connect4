@@ -9,3 +9,11 @@
 .row {
 	width: 400px;
 }
+
+.red {
+	background-color: red;
+}
+
+.black {
+	background-color: black;
+}
