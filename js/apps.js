@@ -44,14 +44,14 @@ makeBoard();
 // console.log(gameBoard[0][1]);
 ////having every game tile be a variable helps
 var fakeBoard = function(){
-	for (var i = 0; i < 10; i++) {
+	for (var i = -3; i < 10; i++) {
 		var frow = document.body.appendChild(document.createElement('div'));
 		frow.className = 'frow';
 		frow.id = 'frow' + i;
 		for (var j = -3; j < 11; j++) {
-			var face = document.getElementsByClassName('frow')[i].appendChild(document.createElement('div'));
+			var face = document.getElementsByClassName('frow')[i + 3].appendChild(document.createElement('div'));
 			face.className = 'face';
-			if (i > 5 || (j > 6  || j < 0)) {
+			if ((i > 5 || i < 0) || (j > 6  || j < 0)) {
 				face.id = i + "," + j;
 				face.setAttribute('data-value', j);
       	face.setAttribute('row-value', i);
@@ -152,7 +152,9 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
 	console.log('Condition 5 works');
 	alert('Player 1 wins');
-} else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+}
+//Checking horizontal blacks from left to right
+else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
@@ -164,25 +166,161 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
-	console.log('Condition 6 works');
+	console.log('Condition 7 works');
+	alert('Player 1 wins');
+}
+//Checking horizontal blacks if final move is second from the left
+else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+	console.log('Condition 8 works');
+	alert('Player 2 wins');
+}
+//Checking horizontal reds if final move is second from the right
+else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
+	console.log('Condition 9 works');
 	alert('Player 1 wins');
 }
 //Checking horizontal blacks if final move is second from the right
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
-	console.log('Condition 6 works');
+	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
+	console.log('Condition 10 works');
+	alert('Player 2 wins');
+	}
+	//Checking diagonal reds if final move is at the top left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
+	console.log('Condition 11 works');
 	alert('Player 1 wins');
 }
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
-	console.log('Condition 6 works');
+//Checking diagonal blacks if final move is at the top left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
+	console.log('Condition 12 works');
+	alert('Player 2 wins');
+}
+	//Checking diagonal reds if final move is at the bottom right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
+	console.log('Condition 13 works');
 	alert('Player 1 wins');
-	}
-//Checking horizontal reds if final move is second from the left
+}
+	//Checking diagonal blacks if final move is at the bottom right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
+	console.log('Condition 14 works');
+	alert('Player 2 wins');
+}
+	//Checking diagonal reds if final move is at the bottom left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
+	console.log('Condition 15 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is at the bottom left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
+	console.log('Condition 16 works');
+	alert('Player 2 wins');
+}
+//Checking diagonal reds if final move is at the top right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
+	console.log('Condition 17 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is at the top right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
+	console.log('Condition 18 works');
+	alert('Player 2 wins');
+}
+//Checking diagonal reds if final move is second from the left ascending left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red') {
+	console.log('Condition 19 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is second from the left ascending left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black') {
+	console.log('Condition 20 works');
+	alert('Player 2 wins');
+}
+//Checking diagonal reds if final move is second from the right ascending left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
+	console.log('Condition 21 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is second from the right ascending left
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
+	console.log('Condition 22 works');
+	alert('Player 2 wins');
+}
+//Checking diagonal reds if final move is second from the right ascending right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
+	console.log('Condition 23 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is second from the right ascending right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+	console.log('Condition 24 works');
+	alert('Player  wins');
+}
+//Checking diagonal reds if final move is second from the left ascending right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
+	console.log('Condition 25 works');
+	alert('Player 1 wins');
+}
+//Checking diagonal blacks if final move is second from the left ascending right
+	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+	console.log('Condition 26 works');
+	alert('Player 1 wins');
+}
 };
 // var getAdjH = function(row,col) {
 // if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
