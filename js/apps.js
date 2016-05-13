@@ -1,6 +1,11 @@
 
 /////Making the game////
 var connectFourBoard = document.getElementById('gameboard');
+var button = document.getElementsByTagName('button');
+
+button[0].addEventListener("click", function(){
+
+})
 // var emptySpace = 0;
 // var playerSpace = 1;
 // var otherPlayerSpace = 2;
@@ -37,8 +42,6 @@ var makeBoard = function(){
 };
 //gameBoard x and y axis was very confusing for a bit. To make things clear. rows = y axis, columns = x axis. gameBoard[row][column]
 //gameBoard[y][x]
-
-makeBoard();
 // console.log(gameBoard);
 // console.log(gameBoard[0]);
 // console.log(gameBoard[0][1]);
@@ -59,7 +62,18 @@ var fakeBoard = function(){
 		}
 	}
 };
-fakeBoard();
+
+var playerOne = {
+	name: ""
+};
+playerOne.name = prompt('Enter Player One name');
+document.getElementById('p1').innerHTML = playerOne.name;
+var playerTwo = {
+	name: ""
+};
+playerTwo.name = prompt('Enter Player Two name');
+document.getElementById('p2').innerHTML = playerTwo.name;
+
 var boardSpace = document.getElementsByClassName('space');
 console.log(boardSpace);
 //////clickCount is critical for keeping track of turns.
@@ -111,6 +125,9 @@ var getAdj = function(row,col) {
 // 	console.log('Condition 3 works');
 // 	alert('Player 1 wins');;
 // 	}}
+//There are 13 win conditions if you base your check win off of the last move made.
+//1 vertical check. 4 horizontal checks. 8 diagonal checks. I have 26 conditions because I separated it by class
+//Checking win conditions starting from vertical reds
 if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'red' &&
@@ -119,7 +136,9 @@ if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	console.log(row);
 	alert('Player 1 wins!');
 	console.log("this is row now: " + row);
-} else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+} 
+//Checking vertical blacks
+else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'black') {
@@ -303,7 +322,7 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
 	console.log('Condition 24 works');
-	alert('Player  wins');
+	alert('Player 2 wins');
 }
 //Checking diagonal reds if final move is second from the left ascending right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -319,7 +338,7 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
 	console.log('Condition 26 works');
-	alert('Player 1 wins');
+	alert('Player 2 wins');
 }
 };
 // var getAdjH = function(row,col) {
@@ -409,7 +428,6 @@ var makeSpaceClickable = function() {
 			})
 	}
 };
-makeSpaceClickable();
 // connectFourBoard.addEventListener("click",
 // 	function() {
 // 		console.log("clicking works!");
@@ -541,3 +559,7 @@ var playerMove = function(col) {
 
 // - conditional so that game stops and players cant keep clicking
 // - 
+makeBoard();
+fakeBoard();
+makeSpaceClickable();
+
