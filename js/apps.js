@@ -1,11 +1,12 @@
 
+window.onload = function() {
 /////Making the game////
 var connectFourBoard = document.getElementById('gameboard');
 var button = document.getElementsByTagName('button');
 
 button[0].addEventListener("click", function(){
-
-})
+window.location.reload();
+});
 // var emptySpace = 0;
 // var playerSpace = 1;
 // var otherPlayerSpace = 2;
@@ -32,7 +33,7 @@ var makeBoard = function(){
       // space.innerHTML = '0';<--Originally used 0, 1 and 2 as a basic visual representation
       space.innerHTML = '';
       space.id = i + "," + j;
-      space.setAttribute('data-value', j);
+      space.setAttribute('column-value', j);
       space.setAttribute('row-value', i);
       // space.addEventListener('click',
       // 	function() {
@@ -52,12 +53,12 @@ var fakeBoard = function(){
 		frow.className = 'frow';
 		frow.id = 'frow' + i;
 		for (var j = -3; j < 11; j++) {
-			var face = document.getElementsByClassName('frow')[i + 3].appendChild(document.createElement('div'));
-			face.className = 'face';
+			var fspace = document.getElementsByClassName('frow')[i + 3].appendChild(document.createElement('div'));
+			fspace.className = 'fspace';
 			if ((i > 5 || i < 0) || (j > 6  || j < 0)) {
-				face.id = i + "," + j;
-				face.setAttribute('data-value', j);
-      	face.setAttribute('row-value', i);
+				fspace.id = i + "," + j;
+				fspace.setAttribute('column-value', j);
+      	fspace.setAttribute('row-value', i);
 			}
 		}
 	}
@@ -134,8 +135,9 @@ if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'red') {
 	console.log('Condition 1 works');
 	console.log(row);
-	alert('Player 1 wins!');
-	console.log("this is row now: " + row);
+	alert(playerOne.name + ' wins!');
+	// console.log("this is row now: " + row);
+	window.location.reload();
 } 
 //Checking vertical blacks
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -144,7 +146,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'black') {
 	console.log('Condition 2 works');
 	console.log(row);
-	alert('Player 2 wins!');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 } 
 //Checking horizontal reds from right to left
 else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -153,7 +156,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
 	console.log(typeof row);
 	console.log('Condition 3 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 } 
 //Checking horizontal blacks from right to left
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -162,7 +166,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
 	console.log(typeof row);
 	console.log('Condition 4 works');
-	alert('Player 2 wins!');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 } 
 //Checking horizontal reds from left to right
 else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -170,7 +175,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
 	console.log('Condition 5 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking horizontal blacks from left to right
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -178,7 +184,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
 	console.log('Condition 6 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 } 
 //Checking horizontal reds if final move is second from the left
 else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -186,7 +193,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
 	console.log('Condition 7 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking horizontal blacks if final move is second from the left
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -194,7 +202,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
 	console.log('Condition 8 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking horizontal reds if final move is second from the right
 else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -202,7 +211,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
 	console.log('Condition 9 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking horizontal blacks if final move is second from the right
 else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -210,7 +220,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
 	console.log('Condition 10 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 	}
 	//Checking diagonal reds if final move is at the top left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -218,7 +229,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
 	console.log('Condition 11 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is at the top left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -226,7 +238,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
 	console.log('Condition 12 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 	//Checking diagonal reds if final move is at the bottom right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -234,7 +247,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
 	console.log('Condition 13 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 	//Checking diagonal blacks if final move is at the bottom right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -242,7 +256,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
 	console.log('Condition 14 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 	//Checking diagonal reds if final move is at the bottom left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -250,7 +265,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
 	console.log('Condition 15 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is at the bottom left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -258,7 +274,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
 	console.log('Condition 16 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal reds if final move is at the top right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -266,7 +283,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
 	console.log('Condition 17 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is at the top right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -274,7 +292,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
 	console.log('Condition 18 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal reds if final move is second from the left ascending left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -282,7 +301,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red') {
 	console.log('Condition 19 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is second from the left ascending left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -290,7 +310,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black') {
 	console.log('Condition 20 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal reds if final move is second from the right ascending left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -298,7 +319,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
 	console.log('Condition 21 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is second from the right ascending left
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -306,7 +328,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
 	console.log('Condition 22 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal reds if final move is second from the right ascending right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -314,7 +337,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
 	console.log('Condition 23 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is second from the right ascending right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -322,7 +346,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
 	console.log('Condition 24 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal reds if final move is second from the left ascending right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
@@ -330,7 +355,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
 	console.log('Condition 25 works');
-	alert('Player 1 wins');
+	alert(playerOne.name + ' wins!');
+	window.location.reload();
 }
 //Checking diagonal blacks if final move is second from the left ascending right
 	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
@@ -338,7 +364,8 @@ else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
 	console.log('Condition 26 works');
-	alert('Player 2 wins');
+	alert(playerTwo.name + ' wins!');
+	window.location.reload();
 }
 };
 // var getAdjH = function(row,col) {
@@ -392,6 +419,9 @@ var trackClick = connectFourBoard.addEventListener("click",
 		function() {
 			clickCount++;
 			clickCount = clickCount++;
+			if (clickCount === 42) {
+				window.location.reload();
+			}
 			// console.log(clickCount);
 
 		});
@@ -405,9 +435,9 @@ var checkForWin = function() {
 		console.log("checking checkforwin")
 		console.log(allReds)
 		console.log("step 1");
-		getAdj(allReds[allReds.length - 1].getAttribute('row-value'),allReds[allReds.length - 1].getAttribute('data-value'));
+		getAdj(allReds[allReds.length - 1].getAttribute('row-value'),allReds[allReds.length - 1].getAttribute('column-value'));
 	} else {
-		getAdj(allBlacks[allBlacks.length - 1].getAttribute('row-value'),allBlacks[allBlacks.length - 1].getAttribute('data-value'));
+		getAdj(allBlacks[allBlacks.length - 1].getAttribute('row-value'),allBlacks[allBlacks.length - 1].getAttribute('column-value'));
 	}
 	// console.log(allClicked[allClicked.length - 1].id + 1);
 	// console.log('this works!');
@@ -422,7 +452,7 @@ var makeSpaceClickable = function() {
 			function() {
 				// console.log("clicking works!");
 				// console.log(this.getAttribute('data-value'));
-				checkRowSpace(this.getAttribute('data-value'));
+				checkRowSpace(this.getAttribute('column-value'));
 				allClicked.push(this);
 				checkForWin();
 			})
@@ -562,4 +592,5 @@ var playerMove = function(col) {
 makeBoard();
 fakeBoard();
 makeSpaceClickable();
+};
 
