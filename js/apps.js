@@ -11,6 +11,8 @@
 	var bodyHtml = '<div id="header"><h2>Connect Four</h2><button>Reset</button></div>' +
 		'<div id="gameboard"></div>' +
 		'<div id="game-info"><h3>Player 1</h3><p id="p1"></p><h3>Player 2</h3><p id="p2"></p></div>';
+	var players = promptPlayers();
+	resetBoard();
 	
 	function resetBoard() {
 		document.querySelector('body').innerHTML = bodyHtml;
@@ -43,17 +45,13 @@
 
 	function makeBoard() {
 	  gameBoard = [];
-
 	  for (var i = 0; i < 6; i++){
 	    gameBoard[i] = new Array();
-
 	    var row = connectFourBoard.appendChild(document.createElement('div'));
 			row.className = 'row';
 			row.id = 'row' + i;
-
 	    for (var j = 0; j < 7; j++){
 	      gameBoard[i].push(0);
-
 	      var space = rows[i].appendChild(document.createElement('div'));
 	      space.className = 'space';
 	      space.innerHTML = '';
@@ -69,11 +67,9 @@
 			var frow = document.body.appendChild(document.createElement('div'));
 			frow.className = 'frow';
 			frow.id = 'frow' + i;
-
 			for (var j = -3; j < 11; j++) {
 				var fspace = frow.appendChild(document.createElement('div'));
 				fspace.className = 'fspace';
-
 				if ((i > 5 || i < 0) || (j > 6  || j < 0)) {
 					fspace.id = i + "," + j;
 					fspace.setAttribute('column-value', j);
@@ -86,15 +82,11 @@
 	function promptPlayers() {
 		var oneName = prompt('Enter Player One name') || '';
 		var twoName = prompt('Enter Player Two name') || '';
-		
 		return {
 			one: oneName,
 			two: twoName
 		};
 	}
-	
-	var players = promptPlayers();
-	resetBoard();
 	
 	function getAdj(row,col) {
 		//There are 13 win conditions if you base your check win off of the last move made.
@@ -193,9 +185,9 @@
 			console.log('Condition 10 works');
 			alert(players.two + ' wins!');
 			resetBoard();
-			}
-			//Checking diagonal reds if final move is at the top left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		}
+		//Checking diagonal reds if final move is at the top left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
@@ -204,7 +196,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is at the top left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
@@ -212,8 +204,8 @@
 			alert(players.two + ' wins!');
 			resetBoard();
 		}
-			//Checking diagonal reds if final move is at the bottom right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		//Checking diagonal reds if final move is at the bottom right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
@@ -221,8 +213,8 @@
 			alert(players.one + ' wins!');
 			resetBoard();
 		}
-			//Checking diagonal blacks if final move is at the bottom right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		//Checking diagonal blacks if final move is at the bottom right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
@@ -230,8 +222,8 @@
 			alert(players.two + ' wins!');
 			resetBoard();
 		}
-			//Checking diagonal reds if final move is at the bottom left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		//Checking diagonal reds if final move is at the bottom left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
@@ -240,7 +232,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is at the bottom left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
@@ -249,7 +241,7 @@
 			resetBoard();
 		}
 		//Checking diagonal reds if final move is at the top right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
@@ -258,7 +250,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is at the top right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
@@ -267,7 +259,7 @@
 			resetBoard();
 		}
 		//Checking diagonal reds if final move is second from the left ascending left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red') {
@@ -276,7 +268,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is second from the left ascending left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black') {
@@ -285,7 +277,7 @@
 			resetBoard();
 		}
 		//Checking diagonal reds if final move is second from the right ascending left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
@@ -294,7 +286,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is second from the right ascending left
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
@@ -303,7 +295,7 @@
 			resetBoard();
 		}
 		//Checking diagonal reds if final move is second from the right ascending right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
@@ -312,7 +304,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is second from the right ascending right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
@@ -321,7 +313,7 @@
 			resetBoard();
 		}
 		//Checking diagonal reds if final move is second from the left ascending right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
@@ -330,7 +322,7 @@
 			resetBoard();
 		}
 		//Checking diagonal blacks if final move is second from the left ascending right
-			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
 			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
@@ -377,9 +369,9 @@
 	
 	//////add Values////
 	function checkRowSpace(col) {
-	 	  for (var i = rows.length - 1; i > 0; i--) {
+		for (var i = rows.length - 1; i > 0; i--) {
 	     	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
-	     		if ((clickCount%2) === 0) {
+	     		if (clickCount %2 === 0) {
 	     			document.getElementById(i + "," + col).classList.add('red');
 	     			gameBoard[i][col] += 1;
 	     			allReds.push(document.getElementById(i + "," + col));
@@ -408,6 +400,6 @@
 	   			break;
 	   		}
 	 	}
-	};
+	}
 }());
 
