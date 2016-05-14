@@ -1,596 +1,413 @@
+(function onload() {
+	/////Making the game////
+	var connectFourBoard;
+	var button;
+	var allReds;
+	var allBlacks;
+	var allClicked;
+	var rows;
+	var gameBoard;
+	var clickCount;
+	var bodyHtml = '<div id="header"><h2>Connect Four</h2><button>Reset</button></div>' +
+		'<div id="gameboard"></div>' +
+		'<div id="game-info"><h3>Player 1</h3><p id="p1"></p><h3>Player 2</h3><p id="p2"></p></div>';
+	
+	function resetBoard() {
+		document.querySelector('body').innerHTML = bodyHtml;
+		document.getElementById('p1').innerHTML = players.one;
+		document.getElementById('p2').innerHTML = players.two;
+		connectFourBoard = document.getElementById('gameboard');
+		button = document.getElementsByTagName('button');
+		allReds = [];
+		allBlacks = [];
+		allClicked = [];
+		rows = document.getElementsByClassName('row');
+		gameBoard = [];
+		clickCount = 0;
+		button[0].addEventListener("click", function () {
+			resetBoard();
+		});
+		connectFourBoard.addEventListener("click",
+			function() {
+				clickCount++;
+				clickCount = clickCount++;
+				if (clickCount === 42) {
+					makeBoard();
+				}
+			}
+		);
+		makeBoard();
+		fakeBoard();
+		makeSpaceClickable();
+	}
 
-window.onload = function() {
-/////Making the game////
-var connectFourBoard = document.getElementById('gameboard');
-var button = document.getElementsByTagName('button');
+	function makeBoard() {
+	  gameBoard = [];
 
-button[0].addEventListener("click", function(){
-window.location.reload();
-});
-// var emptySpace = 0;
-// var playerSpace = 1;
-// var otherPlayerSpace = 2;
-////the allReds and allBlacks arrays didn't work because they automatically arranged themselves in numerical order
-// var allReds = document.getElementsByClassName('red');
-// var allBlacks = document.getElementsByClassName('black');
-var allReds = [];
-var allBlacks = [];
-var allClicked = [];
-var rows = document.getElementsByClassName('row');
-////for now makeBoard has j,i but will eventually be 0
-var gameBoard = [];
-var makeBoard = function(){
-  gameBoard = [];
-  for(var i = 0; i < 6; i++){
-    gameBoard[i] = new Array();
-    var row = document.getElementById('gameboard').appendChild(document.createElement('div'));
-		row.className = 'row';
-		row.id = 'row' + i;
-    for(var j = 0; j < 7; j++){
-      gameBoard[i].push(0);
-      var space = document.getElementsByClassName('row')[i].appendChild(document.createElement('div'));
-      space.className = 'space';
-      // space.innerHTML = '0';<--Originally used 0, 1 and 2 as a basic visual representation
-      space.innerHTML = '';
-      space.id = i + "," + j;
-      space.setAttribute('column-value', j);
-      space.setAttribute('row-value', i);
-      // space.addEventListener('click',
-      // 	function() {
-      // 	console.log(hello)})
-    }
-  }
-};
-//gameBoard x and y axis was very confusing for a bit. To make things clear. rows = y axis, columns = x axis. gameBoard[row][column]
-//gameBoard[y][x]
-// console.log(gameBoard);
-// console.log(gameBoard[0]);
-// console.log(gameBoard[0][1]);
-////having every game tile be a variable helps
-var fakeBoard = function(){
-	for (var i = -3; i < 10; i++) {
-		var frow = document.body.appendChild(document.createElement('div'));
-		frow.className = 'frow';
-		frow.id = 'frow' + i;
-		for (var j = -3; j < 11; j++) {
-			var fspace = document.getElementsByClassName('frow')[i + 3].appendChild(document.createElement('div'));
-			fspace.className = 'fspace';
-			if ((i > 5 || i < 0) || (j > 6  || j < 0)) {
-				fspace.id = i + "," + j;
-				fspace.setAttribute('column-value', j);
-      	fspace.setAttribute('row-value', i);
+	  for (var i = 0; i < 6; i++){
+	    gameBoard[i] = new Array();
+
+	    var row = connectFourBoard.appendChild(document.createElement('div'));
+			row.className = 'row';
+			row.id = 'row' + i;
+
+	    for (var j = 0; j < 7; j++){
+	      gameBoard[i].push(0);
+
+	      var space = rows[i].appendChild(document.createElement('div'));
+	      space.className = 'space';
+	      space.innerHTML = '';
+	      space.id = i + "," + j;
+	      space.setAttribute('column-value', j);
+	      space.setAttribute('row-value', i);
+	    }
+	  }
+	};
+
+	function fakeBoard() {
+		for (var i = -3; i < 10; i++) {
+			var frow = document.body.appendChild(document.createElement('div'));
+			frow.className = 'frow';
+			frow.id = 'frow' + i;
+
+			for (var j = -3; j < 11; j++) {
+				var fspace = frow.appendChild(document.createElement('div'));
+				fspace.className = 'fspace';
+
+				if ((i > 5 || i < 0) || (j > 6  || j < 0)) {
+					fspace.id = i + "," + j;
+					fspace.setAttribute('column-value', j);
+	      			fspace.setAttribute('row-value', i);
+				}
 			}
 		}
+	};
+	
+	function promptPlayers() {
+		var oneName = prompt('Enter Player One name') || '';
+		var twoName = prompt('Enter Player Two name') || '';
+		
+		return {
+			one: oneName,
+			two: twoName
+		};
 	}
-};
-
-var playerOne = {
-	name: ""
-};
-playerOne.name = prompt('Enter Player One name');
-document.getElementById('p1').innerHTML = playerOne.name;
-var playerTwo = {
-	name: ""
-};
-playerTwo.name = prompt('Enter Player Two name');
-document.getElementById('p2').innerHTML = playerTwo.name;
-
-var boardSpace = document.getElementsByClassName('space');
-console.log(boardSpace);
-//////clickCount is critical for keeping track of turns.
-// var getAdj = function(row,col) {
-// 	if (document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === document.getElementById(row + ',' + col).classList[1]) {
-// 		getAdjHL
-// 	}	else if (document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === document.getElementById(row + ',' + col).classList[1]) {
-// 		getAdjHR(row,col);
-// 	} else if (document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === document.getElementById(row + ',' + col).classList[1]||
-// 	document.getElementById((parseInt((row)) - 1) + ',' + col).classList[1] === document.getElementById(row + ',' + col).classList[1]) {
-// 		getAdjV(row,col);
-// 	} else {
-// 		console.log('error')
-// 	}
-// };
-	// console.log("ROW: "  + row);
-	// console.log("COLD: "  + col);
-// console.log(document.getElementById(row + ',' + col));
-// console.log(row);
-// console.log(parseInt(col) + 1);
-// Checking if parseInt worked for finding elements by ID.
-// console.log(document.getElementById((parseInt((row)) + 1) + ',' + col));
-// console.log(document.getElementById((parseInt((row)) + 2) + ',' + col));
-// console.log(document.getElementById(row + ',' + (parseInt(col) + 1)));
-// console.log(document.getElementById(row + ',' + (parseInt(col) + 2)));
-// console.log(document.getElementById(row + ',' + (parseInt(col) + 3)));
-
-
-var getAdj = function(row,col) {
-	// console.log('getAdj is running');
-	// console.log("this is row then: " + row);
-	// console.log("this is column: " + col);
-	// console.log(parseInt(row));
-	// console.log((parseInt((row)) + 1) + ',' + col);
-	// console.log((parseInt((row)) - 1) + ',' + col);
-	// console.log(document.getElementById(row + ',' + col).classList[1])
-	// console.log(document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1]);
-	// console.log(document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1]);
-	// console.log(document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1]);
-	// if (row === '5') {
-	// 	console.log('test');
-	// 	console.log('this is row ' + row);
-	// 	console.log('this is column ' + col);
-// if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 1).toString).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 2).toString).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 3).toString).classList[1] === 'red') {
-// 	console.log(typeof row);
-// 	console.log('Condition 3 works');
-// 	alert('Player 1 wins');;
-// 	}}
-//There are 13 win conditions if you base your check win off of the last move made.
-//1 vertical check. 4 horizontal checks. 8 diagonal checks. I have 26 conditions because I separated it by class
-//Checking win conditions starting from vertical reds
-if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'red') {
-	console.log('Condition 1 works');
-	console.log(row);
-	alert(playerOne.name + ' wins!');
-	// console.log("this is row now: " + row);
-	window.location.reload();
-} 
-//Checking vertical blacks
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'black') {
-	console.log('Condition 2 works');
-	console.log(row);
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-} 
-//Checking horizontal reds from right to left
-else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
-	console.log(typeof row);
-	console.log('Condition 3 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-} 
-//Checking horizontal blacks from right to left
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
-	console.log(typeof row);
-	console.log('Condition 4 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-} 
-//Checking horizontal reds from left to right
-else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
-	console.log('Condition 5 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking horizontal blacks from left to right
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
-	console.log('Condition 6 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-} 
-//Checking horizontal reds if final move is second from the left
-else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
-	console.log('Condition 7 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking horizontal blacks if final move is second from the left
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
-	console.log('Condition 8 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking horizontal reds if final move is second from the right
-else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
-	console.log('Condition 9 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking horizontal blacks if final move is second from the right
-else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
-	console.log('Condition 10 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-	}
-	//Checking diagonal reds if final move is at the top left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
-	console.log('Condition 11 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is at the top left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
-	console.log('Condition 12 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-	//Checking diagonal reds if final move is at the bottom right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
-	console.log('Condition 13 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-	//Checking diagonal blacks if final move is at the bottom right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
-	console.log('Condition 14 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-	//Checking diagonal reds if final move is at the bottom left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
-	console.log('Condition 15 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is at the bottom left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
-	console.log('Condition 16 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal reds if final move is at the top right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
-	console.log('Condition 17 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is at the top right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
-	console.log('Condition 18 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal reds if final move is second from the left ascending left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red') {
-	console.log('Condition 19 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is second from the left ascending left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black') {
-	console.log('Condition 20 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal reds if final move is second from the right ascending left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
-	console.log('Condition 21 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is second from the right ascending left
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
-	console.log('Condition 22 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal reds if final move is second from the right ascending right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
-	console.log('Condition 23 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is second from the right ascending right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
-	console.log('Condition 24 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal reds if final move is second from the left ascending right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
-	console.log('Condition 25 works');
-	alert(playerOne.name + ' wins!');
-	window.location.reload();
-}
-//Checking diagonal blacks if final move is second from the left ascending right
-	else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-	document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
-	console.log('Condition 26 works');
-	alert(playerTwo.name + ' wins!');
-	window.location.reload();
-}
-};
-// var getAdjH = function(row,col) {
-// if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
-// 	alert('Player 1 wins');
-// } else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
-// 	document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
-// 	alert('Player 1 wins');
-// } else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
-// 	document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
-// 	alert('Player 2 wins');
-// }
-// console.log(document.getElementById((row++ + inc) + ',' + col));
-// console.log(row);
-// var testMinus = (row-- - inc);
-// console.log(parseInt(row));
-// console.log(parseInt(row) + 1);
-// var testPlus = (row++ + inc);
-// console.log(row);
-// if (document.getElementById(row + ',' + col).classList[1] === 'red' && document.getElementById((row + 1) + ',' + col).classList[1] === 'red' && document.getElementById((row + 2)+ ',' + col).classList[1] === 'red' && document.getElementById((row + 3)+ ',' + col).classList[1] === 'red') {
-	// 	console.log('this is my life now');
-	// }
-// };
-// var getAdjV = function(row,col) {
-// 	console.log("this is row: " + row);
-// 	console.log("this is column: " + col);
-// 	if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'red' &&
-// 	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'red') {
-// 	console.log('WINNING!');
-// 	alert('Player 1 wins!');
-// } else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
-// 	document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'black' &&
-// 	document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'black' &&
-// 	document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'black') {
-// 	alert('Player 2 wins!');
-// } else {
-// 	console.log('error');
-// }
-// };
-var clickCount = 0;
-var trackClick = connectFourBoard.addEventListener("click",
-		function() {
-			clickCount++;
-			clickCount = clickCount++;
-			if (clickCount === 42) {
-				window.location.reload();
+	
+	var players = promptPlayers();
+	resetBoard();
+	
+	function getAdj(row,col) {
+		//There are 13 win conditions if you base your check win off of the last move made.
+		//1 vertical check. 4 horizontal checks. 8 diagonal checks. I have 26 conditions because I separated it by class
+		//Checking win conditions starting from vertical reds
+		if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'red') {
+			console.log('Condition 1 works');
+			console.log(row);
+			alert(players.one + ' wins!');
+			// console.log("this is row now: " + row);
+			resetBoard();
+		} 
+		//Checking vertical blacks
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + col).classList[1] === 'black') {
+			console.log('Condition 2 works');
+			console.log(row);
+			alert(players.two + ' wins!');
+			resetBoard();
+		} 
+		//Checking horizontal reds from right to left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
+			console.log(typeof row);
+			console.log('Condition 3 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		} 
+		//Checking horizontal blacks from right to left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
+			console.log(typeof row);
+			console.log('Condition 4 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		} 
+		//Checking horizontal reds from left to right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
+			console.log('Condition 5 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking horizontal blacks from left to right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
+			console.log('Condition 6 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		} 
+		//Checking horizontal reds if final move is second from the left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
+			console.log('Condition 7 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking horizontal blacks if final move is second from the left
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+			console.log('Condition 8 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking horizontal reds if final move is second from the right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
+			console.log('Condition 9 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking horizontal blacks if final move is second from the right
+		else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById(row + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
+			console.log('Condition 10 works');
+			alert(players.two + ' wins!');
+			resetBoard();
 			}
-			// console.log(clickCount);
-
-		});
-
-var checkForWin = function() {
-	console.log("CHECK FOR WIN")
-	console.log("This is all reds: " + allReds.length);
-	console.log("This is all blacks: " + allBlacks.length);
-	console.log("current click count: " + clickCount);
-	if (clickCount%2 === 0) {
-		console.log("checking checkforwin")
-		console.log(allReds)
-		console.log("step 1");
-		getAdj(allReds[allReds.length - 1].getAttribute('row-value'),allReds[allReds.length - 1].getAttribute('column-value'));
-	} else {
-		getAdj(allBlacks[allBlacks.length - 1].getAttribute('row-value'),allBlacks[allBlacks.length - 1].getAttribute('column-value'));
-	}
-	// console.log(allClicked[allClicked.length - 1].id + 1);
-	// console.log('this works!');
-	// if (allClicked[allClicked.length - 1] === allReds[allReds.length - 1]) {
-	// getAdj(allClicked[allClicked.length - 1].getAttribute('row-value'),allClicked[allClicked.length - 1].getAttribute('data-value'));
-	// } else if (allClicked[allClicked.length - 1] === allBlacks[allBlacks.length - 1])
-};
-
-var makeSpaceClickable = function() {
-	for (var i = 0; i < boardSpace.length; i++) {
-		boardSpace[i].addEventListener("click",
-			function() {
-				// console.log("clicking works!");
-				// console.log(this.getAttribute('data-value'));
-				checkRowSpace(this.getAttribute('column-value'));
-				allClicked.push(this);
-				checkForWin();
-			})
-	}
-};
-// connectFourBoard.addEventListener("click",
-// 	function() {
-// 		console.log("clicking works!");
-// 		console.log(this);
-// 		checkRowSpace(0);
-// 	})
-
-// var playerMove = function() {
-// 	.addEventListener("click", )
-// };
-
-var checkWin = function() {
-
-};
-
-
-
-var boardValue = function(row, col) {
-	 if(gameBoard[row] == undefined || gameBoard[row][col] == undefined){
-    return undefined;
-  } else {
-    return gameBoard[row][col];
-  }
-};
-
-// var checkRowSpace = function(col) {
-// 	  for(var i = 0; i < 6; i++){
-// 	  	// console.log(gameBoard[i][col]);
-// 	  	// console.log(boardValue(i, col));
-//     	if (gameBoard[i][col] === 0 && gameBoard[i+1][col] === 0) {
-//     		break;
-//     	} else {
-//     		// gameBoard[i][col] = 1; I was really confused about why I wasn't getting a coordinate pair
-//     		//but then I figured it out as indicated below.
-//     		gameBoard[i][col] += 1;
-//     		console.log(gameBoard);
-//     	}
-// }
-// };
-
-//////add Values////
-var checkRowSpace = function(col) {
-	// for(var i = rows.length - 1; i >= 0; i--) lol this didn't work for the top row. Solution found below.
- 	  for(var i = rows.length - 1; i > 0; i--){
-     	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
-     		// console.log(document.getElementById(i + "," + col));
-     		if ((clickCount%2) === 0) {
-     			document.getElementById(i + "," + col).classList.add('red');
-     			gameBoard[i][col] += 1;
-     			allReds.push(document.getElementById(i + "," + col));
-     			// console.log(clickCount);
-     			// console.log(allReds);
-     			break;
- 			} else {
- 				document.getElementById(i + "," + col).classList.add('black');
-     			gameBoard[i][col] += 2;
-     			allBlacks.push(document.getElementById(i + "," + col));
-     			// console.log(clickCount);
-     			// console.log(allBlacks);
-     			break;
- 			}
-     	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
-     		if ((clickCount%2) === 0) {
-     			document.getElementById((i - 1) + "," + col).classList.add('red');
-     			gameBoard[i - 1][col] += 1;
-     			allReds.push(document.getElementById((i - 1) + "," + col));
-     			// console.log(clickCount);
-     			// console.log(allReds); I did this to check if the elements were being pushed into the arrays properly
-     			break;
- 			} else {
- 				document.getElementById((i - 1) + "," + col).classList.add('black');
-     			gameBoard[i - 1][col] += 2;
-     			allBlacks.push(document.getElementById((i - 1) + "," + col));
-     			// console.log(clickCount);
-     			// console.log(allBlacks);
-     			break;
- 			}
-   		} else if (gameBoard[0][col] > 0) {
-   			alert("Can't let you do that!");
-   			clickCount = clickCount - 1;
-   			break;
-   		}
- 	}
-};
-///Just realized the above checkRowSpace function isn't working because right now my gameBoard[i][j] is not an integer
-var resetGame = function() {
-
-};
-
-var playerMove = function(col) {
-	checkRowSpace(col);
-};
-
-// checkRowSpace(0);
-// checkRowSpace(0);
-// checkRowSpace(0);
-// checkRowSpace(0);
-// checkRowSpace(0);
-// checkRowSpace(0);
-// checkRowSpace(0);
-///these console logs were to help me understand/comprehend that whole row vs. column confusion I had
-// console.log(boardValue(2, 3));
-// console.log(boardValue(3, 2));
-// console.log(boardValue(5,6));
-///////////////////////////////////////
-
-////Pseudo code
-////Make the game board
-////game board will be a series of arrays
-////make player move function
-////check for 2 things
-////playerMove function
-////
-////
-////
-/////
-/////
-///
-
-
-
-
-// NOTES
-// - comment out all console logs
-// - break down down complex functions into smaller functions
-// - console log to check each small function works, then comment them out
-// - enter console log in terms of step 1, etc ONLY on functions that are invoked in order off the on click
-// - which ones fire? where does it break?
-
-// - conditional so that game stops and players cant keep clicking
-// - 
-makeBoard();
-fakeBoard();
-makeSpaceClickable();
-};
+			//Checking diagonal reds if final move is at the top left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
+			console.log('Condition 11 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is at the top left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
+			console.log('Condition 12 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+			//Checking diagonal reds if final move is at the bottom right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
+			console.log('Condition 13 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+			//Checking diagonal blacks if final move is at the bottom right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
+			console.log('Condition 14 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+			//Checking diagonal reds if final move is at the bottom left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'red') {
+			console.log('Condition 15 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is at the bottom left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 3) + ',' + (parseInt(col) + 3)).classList[1] === 'black') {
+			console.log('Condition 16 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal reds if final move is at the top right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'red') {
+			console.log('Condition 17 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is at the top right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 3) + ',' + (parseInt(col) - 3)).classList[1] === 'black') {
+			console.log('Condition 18 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal reds if final move is second from the left ascending left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red') {
+			console.log('Condition 19 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is second from the left ascending left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black') {
+			console.log('Condition 20 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal reds if final move is second from the right ascending left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red') {
+			console.log('Condition 21 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is second from the right ascending left
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black') {
+			console.log('Condition 22 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal reds if final move is second from the right ascending right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
+			console.log('Condition 23 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is second from the right ascending right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 2) + ',' + (parseInt(col) - 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+			console.log('Condition 24 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal reds if final move is second from the left ascending right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'red' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'red') {
+			console.log('Condition 25 works');
+			alert(players.one + ' wins!');
+			resetBoard();
+		}
+		//Checking diagonal blacks if final move is second from the left ascending right
+			else if (document.getElementById(row + ',' + col).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 1) + ',' + (parseInt(col) + 1)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) - 2) + ',' + (parseInt(col) + 2)).classList[1] === 'black' &&
+			document.getElementById((parseInt((row)) + 1) + ',' + (parseInt(col) - 1)).classList[1] === 'black') {
+			console.log('Condition 26 works');
+			alert(players.two + ' wins!');
+			resetBoard();
+		}
+	};
+	
+	function checkForWin() {
+		console.log("CHECK FOR WIN")
+		console.log("This is all reds: " + allReds.length);
+		console.log("This is all blacks: " + allBlacks.length);
+		console.log("current click count: " + clickCount);
+		if (clickCount%2 === 0) {
+			console.log("checking checkforwin")
+			console.log(allReds)
+			console.log("step 1");
+			getAdj(allReds[allReds.length - 1].getAttribute('row-value'),allReds[allReds.length - 1].getAttribute('column-value'));
+		} else {
+			getAdj(allBlacks[allBlacks.length - 1].getAttribute('row-value'),allBlacks[allBlacks.length - 1].getAttribute('column-value'));
+		}
+	};
+	
+	function makeSpaceClickable() {
+		var boardSpace = document.getElementsByClassName('space');
+		for (var i = 0; i < boardSpace.length; i++) {
+			boardSpace[i].addEventListener("click",
+				function() {
+					checkRowSpace(this.getAttribute('column-value'));
+					allClicked.push(this);
+					checkForWin();
+				})
+		}
+	};
+	
+	function boardValue(row, col) {
+		if (gameBoard[row] == undefined || gameBoard[row][col] == undefined) {
+	    	return undefined;
+	  	} else {
+	    	return gameBoard[row][col];
+	  	}
+	};
+	
+	//////add Values////
+	function checkRowSpace(col) {
+	 	  for (var i = rows.length - 1; i > 0; i--) {
+	     	if (gameBoard[i][col] === 0 && gameBoard[i-1][col] === 0) {
+	     		if ((clickCount%2) === 0) {
+	     			document.getElementById(i + "," + col).classList.add('red');
+	     			gameBoard[i][col] += 1;
+	     			allReds.push(document.getElementById(i + "," + col));
+	     			break;
+	 			} else {
+	 				document.getElementById(i + "," + col).classList.add('black');
+	     			gameBoard[i][col] += 2;
+	     			allBlacks.push(document.getElementById(i + "," + col));
+	     			break;
+	 			}
+	     	} else if (gameBoard[i][col] != 0 && gameBoard[i-1][col] === 0) {
+	     		if ((clickCount%2) === 0) {
+	     			document.getElementById((i - 1) + "," + col).classList.add('red');
+	     			gameBoard[i - 1][col] += 1;
+	     			allReds.push(document.getElementById((i - 1) + "," + col));
+	     			break;
+	 			} else {
+	 				document.getElementById((i - 1) + "," + col).classList.add('black');
+	     			gameBoard[i - 1][col] += 2;
+	     			allBlacks.push(document.getElementById((i - 1) + "," + col));
+	     			break;
+	 			}
+	   		} else if (gameBoard[0][col] > 0) {
+	   			alert("Can't let you do that!");
+	   			clickCount = clickCount - 1;
+	   			break;
+	   		}
+	 	}
+	};
+}());
 
